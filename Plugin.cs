@@ -9,10 +9,10 @@ namespace Bridge
 {
 
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
+    [BepInDependency("FOVFix", BepInDependency.DependencyFlags.HardDependency)]
+    [BepInDependency("RecoilStandalone", BepInDependency.DependencyFlags.HardDependency)]
     public class Plugin : BaseUnityPlugin
     {
-
-        private bool checkedForSensMods = false;
 
         public bool CheckIsReady()
         {
@@ -28,27 +28,9 @@ namespace Bridge
 
         void Update()
         {
-            if (CheckIsReady() && !checkedForSensMods) 
+            if (CheckIsReady()) 
             {
-                if (Chainloader.PluginInfos.ContainsKey("FOVFix")) 
-                {
-                    if (Chainloader.PluginInfos.ContainsKey("RealismMod") && Chainloader.PluginInfos.ContainsKey("RecoilStandalone")) 
-                    {
-                        Logger.LogError("FOV FIX COMPATIBILITY BRIDGE ERROR: REALISM MOD AND RECOIL STANDALONE ARE PRESENT AT THE SAME TIME!");
-                    }
-
-                    if (Chainloader.PluginInfos.ContainsKey("RealismMod"))
-                    {
-                        RealismMod.Plugin.StartingAimSens = FOVFix.Plugin.AimingSens;
-                        checkedForSensMods = true;
-                    }
-                    else if (Chainloader.PluginInfos.ContainsKey("RecoilStandalone")) 
-                    {
-                        RecoilStandalone.Plugin.StartingAimSens = FOVFix.Plugin.AimingSens;
-                        checkedForSensMods = true;
-                    }
-                    Logger.LogError("FOV FIX COMPATIBILITY BRIDGE ERROR: COULD NOT FIND REALISM MOD OR RECOIL STANDALONE, REMOVE BRIDGE IF NEITHER IS INSTALLED!");
-                }
+                RecoilStandalone.Plugin.StartingAimSens = FOVFix.Plugin.AimingSens;
             }
 
         }
