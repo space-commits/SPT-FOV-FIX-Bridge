@@ -10,7 +10,7 @@ namespace Bridge
 
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
     [BepInDependency("FOVFix", BepInDependency.DependencyFlags.HardDependency)]
-    [BepInDependency("RecoilStandalone", BepInDependency.DependencyFlags.HardDependency)]
+    [BepInDependency("RealismMod", BepInDependency.DependencyFlags.HardDependency)]
     public class Plugin : BaseUnityPlugin
     {
 
@@ -28,11 +28,16 @@ namespace Bridge
 
         void Update()
         {
-            if (CheckIsReady()) 
-            {
-                RecoilStandalone.Plugin.StartingAimSens = FOVFix.Plugin.AimingSens;
-            }
-
+            RealismMod.Plugin.StartingAimSens = FOVFix.Plugin.AimingSens;
+            RealismMod.Plugin.IsInDeadZone = FOVFix.FreeAimController.IsInDeadZone;
+            RealismMod.Plugin.DeadZoneReduceSens = !FOVFix.Plugin.FreeAimBlocksRotation.Value;
+            RealismMod.Plugin.DeadZoneSensAmount = FOVFix.Plugin.FreeAimRotationReduction.Value;
+            RealismMod.Plugin.DeadZonePanCamUp = FOVFix.FreeAimController.PanCamUp;
+            RealismMod.Plugin.DeadZonePanCamDown = FOVFix.FreeAimController.PanCamDown;
+            RealismMod.Plugin.DeadZonePanCamLeft = FOVFix.FreeAimController.PanCamLeft;
+            RealismMod.Plugin.DeadZonePanCamRight = FOVFix.FreeAimController.PanCamRight;
+            RealismMod.Plugin.FreeAimEnabled = FOVFix.Plugin.EnableFreeAim.Value;
+            RealismMod.Plugin.CamRotationMulti = FOVFix.Plugin.CamRotationMulti.Value;
         }
     }
 }
